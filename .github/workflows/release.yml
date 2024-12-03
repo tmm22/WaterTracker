@@ -1,1 +1,66 @@
- 
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: Create Release
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Swift
+      uses: swift-actions/setup-swift@v1
+      with:
+        swift-version: "5.9"
+    
+    - name: Build Release
+      run: |
+        chmod +x Scripts/build.sh
+        ./Scripts/build.sh
+    
+    - name: Create ZIP Archive
+      run: |
+        cd WaterTracker.app/Contents/MacOS
+        zip -r ../../../WaterTracker-${{ github.ref_name }}.zip WaterTracker
+        cd ../../..
+    
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref_name }}
+        body: |
+          WaterTracker ${{ github.ref_name }}
+          
+          Features:
+          - Modern UI with dark mode support
+          - Temperature-based hydration recommendations
+          - Customizable user profiles
+          - PDF export functionality
+          - Hydration tracking and trends
+          
+          To install:
+          1. Download the ZIP file
+          2. Extract WaterTracker
+          3. Move to Applications folder (optional)
+          4. Double-click to run
+        draft: false
+        prerelease: false
+    
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./WaterTracker-${{ github.ref_name }}.zip
+        asset_name: WaterTracker-${{ github.ref_name }}.zip
+        asset_content_type: application/zip 
