@@ -7,8 +7,7 @@ import QuartzCore
 struct PDFGenerator {
     static func generateHydrationReport(
         hydrationManager: HydrationManagerImpl,
-        userProfile: UserProfile,
-        weatherService: WeatherService
+        userProfile: UserProfile
     ) async -> Data? {
         // Create PDF document
         let pdfData = NSMutableData()
@@ -111,12 +110,12 @@ struct PDFGenerator {
         }
         
         // Temperature-based recommendation
-        if let temp = weatherService.temperature {
+        if let temp = userProfile.currentTemperature {
             yPosition += 20
-            "Weather-based Recommendation".draw(at: CGPoint(x: 50, y: yPosition), withAttributes: headerAttributes)
+            "Temperature-based Recommendation".draw(at: CGPoint(x: 50, y: yPosition), withAttributes: headerAttributes)
             yPosition += 30
             
-            let recommendation = hydrationManager.getTemperatureBasedRecommendation()
+            let recommendation = userProfile.getTemperatureBasedRecommendation()
             recommendation.draw(at: CGPoint(x: 70, y: yPosition), withAttributes: bodyAttributes)
             yPosition += 40
         }

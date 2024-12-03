@@ -4,6 +4,7 @@ struct ProfileView: View {
     @EnvironmentObject var profile: UserProfile
     @EnvironmentObject var hydrationManager: HydrationManagerImpl
     @State private var showingSaveAlert = false
+    @State private var temperatureInput: String = ""
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
@@ -65,6 +66,40 @@ struct ProfileView: View {
                     .padding()
                 } label: {
                     Label("Personal Information", systemImage: "person.text.rectangle")
+                }
+                
+                // Temperature Settings
+                GroupBox {
+                    VStack(spacing: 16) {
+                        HStack {
+                            TextField("Current Temperature (°C)", text: $temperatureInput)
+                                .textFieldStyle(.roundedBorder)
+                                .frame(width: 150)
+                            
+                            Button("Update") {
+                                if let temp = Double(temperatureInput) {
+                                    profile.updateTemperature(temp)
+                                    temperatureInput = ""
+                                }
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .disabled(Double(temperatureInput) == nil)
+                        }
+                        
+                        if let currentTemp = profile.currentTemperature {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Current Temperature: \(Int(currentTemp))°C")
+                                    .font(.headline)
+                                
+                                Text(profile.getTemperatureBasedRecommendation())
+                                    .font(.callout)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                    }
+                    .padding()
+                } label: {
+                    Label("Temperature Settings", systemImage: "thermometer")
                 }
                 
                 // Health Conditions

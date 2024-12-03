@@ -2,7 +2,6 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var hydrationManager: HydrationManagerImpl
-    @EnvironmentObject var weatherService: WeatherService
     @EnvironmentObject var userProfile: UserProfile
     @State private var showingAddSheet = false
     @State private var customAmount: String = ""
@@ -90,8 +89,8 @@ struct ContentView: View {
             }
             .padding(.horizontal)
             
-            // Weather Info
-            if let temp = weatherService.temperature {
+            // Temperature Recommendation
+            if let temp = userProfile.currentTemperature {
                 VStack(spacing: 8) {
                     HStack {
                         Image(systemName: "thermometer")
@@ -100,7 +99,7 @@ struct ContentView: View {
                             .font(.headline)
                     }
                     
-                    Text(hydrationManager.getTemperatureBasedRecommendation())
+                    Text(userProfile.getTemperatureBasedRecommendation())
                         .font(.callout)
                         .foregroundColor(.secondary)
                         .multilineTextAlignment(.center)
@@ -143,8 +142,7 @@ struct ContentView: View {
         Task {
             guard let pdfData = await PDFGenerator.generateHydrationReport(
                 hydrationManager: hydrationManager,
-                userProfile: userProfile,
-                weatherService: weatherService
+                userProfile: userProfile
             ) else {
                 print("Failed to generate PDF")
                 return

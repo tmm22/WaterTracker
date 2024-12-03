@@ -34,6 +34,16 @@ enum ClimateZone: String, CaseIterable {
         case .polar: return 0.9
         }
     }
+    
+    var baseTemperature: Double {
+        switch self {
+        case .temperate: return 20.0
+        case .tropical: return 30.0
+        case .arid: return 35.0
+        case .mediterranean: return 25.0
+        case .polar: return 10.0
+        }
+    }
 }
 
 enum HealthCondition: String, CaseIterable, Hashable {
@@ -63,6 +73,9 @@ class UserProfile: ObservableObject {
     @Published var activityLevel: ActivityLevel = .moderatelyActive
     @Published var climateZone: ClimateZone = .temperate
     @Published var healthConditions: Set<HealthCondition> = []
+    @Published var currentTemperature: Double?
+    
+    private let apiKey = "625818d31eec539e08d410b42609bf22"
     
     func calculateDailyWaterGoal() -> Double {
         // Base calculation: 30ml per kg of body weight
@@ -85,6 +98,39 @@ class UserProfile: ObservableObject {
             baseGoal *= pow(0.9, decadesOver60)
         }
         
+        // Temperature adjustment
+        if let temp = currentTemperature {
+            let baseTemp = climateZone.baseTemperature
+            if temp > baseTemp {
+                // Add 50ml for each degree above base temperature
+                baseGoal += (temp - baseTemp) * 50
+            }
+        }
+        
         return baseGoal
+    }
+    
+    func getTemperatureBasedRecommendation() -> String {
+        guard let temp = currentTemperature else {
+            return "Set your climate zone for personalized recommendations."
+        }
+        
+        let baseTemp = climateZone.baseTemperature
+        let difference = temp - baseTemp
+        
+        if difference > 10 {
+            return "High temperature alert! Increase your water intake significantly."
+        } else if difference > 5 {
+            return "Temperature is above normal for your climate zone. Consider drinking more water."
+        } else if difference < -5 {
+            return "Temperature is below normal for your climate zone. Maintain regular hydration."
+        } else {
+            return "Temperature is normal for your climate zone. Follow your regular hydration goal."
+        }
+    }
+    
+    func updateTemperature(_ temperature: Double) {
+        currentTemperature = temperature
+        objectWillChange.send()
     }
 } 

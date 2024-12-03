@@ -3,7 +3,6 @@ import UserNotifications
 
 @main
 struct WaterTrackerApp: App {
-    @StateObject private var weatherService = WeatherService()
     @StateObject private var hydrationManager = HydrationManagerImpl()
     @StateObject private var userProfile = UserProfile()
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
@@ -16,7 +15,6 @@ struct WaterTrackerApp: App {
                         Label("Track", systemImage: "drop.fill")
                     }
                     .environmentObject(hydrationManager)
-                    .environmentObject(weatherService)
                     .environmentObject(userProfile)
                 
                 HydrationTrendsView(hydrationManager: hydrationManager)
