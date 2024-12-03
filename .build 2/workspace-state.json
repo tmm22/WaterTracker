@@ -1,0 +1,27 @@
+{
+  "object" : {
+    "artifacts" : [
+
+    ],
+    "dependencies" : [
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "defaults",
+          "kind" : "remoteSourceControl",
+          "location" : "https://github.com/sindresorhus/Defaults.git",
+          "name" : "Defaults"
+        },
+        "state" : {
+          "checkoutState" : {
+            "revision" : "3efef5a28ebdbbe922d4a2049493733ed14475a6",
+            "version" : "7.3.1"
+          },
+          "name" : "sourceControlCheckout"
+        },
+        "subpath" : "Defaults"
+      }
+    ]
+  },
+  "version" : 6
+}
