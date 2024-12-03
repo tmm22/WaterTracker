@@ -1,0 +1,55 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Swift
+      uses: swift-actions/setup-swift@v1
+      with:
+        swift-version: "5.9"
+    
+    - name: Build
+      run: |
+        chmod +x Scripts/build.sh
+        ./Scripts/build.sh
+      
+    - name: Clean
+      run: |
+        chmod +x Scripts/clean.sh
+        ./Scripts/clean.sh --all
+        
+    - name: Build Release
+      run: swift build -c release
+      
+    - name: Run tests
+      run: swift test
+      
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: WaterTracker.app
+        path: WaterTracker.app
+        retention-days: 5
+
+  lint:
+    name: SwiftLint
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Run SwiftLint
+      uses: norio-nomura/action-swiftlint@3.2.1
+      with:
+        args: --strict 
