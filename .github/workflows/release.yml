@@ -12,6 +12,8 @@ jobs:
     
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
     
     - name: Set up Swift
       uses: swift-actions/setup-swift@v1
@@ -29,6 +31,16 @@ jobs:
         zip -r ../../../WaterTracker-${{ github.ref_name }}.zip WaterTracker
         cd ../../..
     
+    - name: Generate Changelog
+      id: changelog
+      uses: mikepenz/release-changelog-builder-action@v4
+      with:
+        configuration: ".github/changelog-config.json"
+        commitMode: true
+        ignorePreReleases: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -38,20 +50,78 @@ jobs:
         tag_name: ${{ github.ref }}
         release_name: Release ${{ github.ref_name }}
         body: |
-          WaterTracker ${{ github.ref_name }}
+          # WaterTracker ${{ github.ref_name }}
           
-          Features:
-          - Modern UI with dark mode support
-          - Temperature-based hydration recommendations
+          A modern macOS application to help you stay hydrated with smart tracking and personalized recommendations.
+          
+          ## What's Changed
+          ${{ steps.changelog.outputs.changelog }}
+          
+          ## New Features & Improvements
+          
+          ### Modern User Interface
+          - Beautiful, native macOS design
+          - Full Dark Mode support
+          - Animated progress tracking
+          - Intuitive tab-based navigation
+          - Responsive and fluid animations
+          
+          ### Smart Hydration Tracking
+          - Personalized daily water goals
+          - Quick-add buttons for common amounts
+          - Custom input options
+          - Progress visualization
+          - Daily goal adjustments
+          
+          ### Temperature-Based Recommendations
+          - Climate zone awareness
+          - Dynamic hydration goals
+          - Temperature-adjusted recommendations
+          - Personalized advice based on conditions
+          
+          ### Profile Management
           - Customizable user profiles
-          - PDF export functionality
-          - Hydration tracking and trends
+          - Activity level tracking
+          - Health condition considerations
+          - Climate zone settings
+          - Age and weight factors
           
-          To install:
-          1. Download the ZIP file
-          2. Extract WaterTracker
-          3. Move to Applications folder (optional)
-          4. Double-click to run
+          ### Data Analysis & Export
+          - Comprehensive PDF reports
+          - Hydration trends visualization
+          - Weekly and monthly statistics
+          - Progress tracking over time
+          - Exportable data
+          
+          ## System Requirements
+          - macOS 14.0 or later
+          - 64-bit processor
+          - 50MB disk space
+          
+          ## Installation Instructions
+          1. Download WaterTracker-${{ github.ref_name }}.zip
+          2. Extract the ZIP file
+          3. Move WaterTracker to Applications (optional)
+          4. Double-click to launch
+          5. If needed, right-click and select "Open" on first launch
+          
+          ## Known Issues
+          - None reported in this release
+          
+          ## Privacy & Security
+          - No data collection
+          - All data stored locally
+          - Temperature data fetched anonymously
+          - No tracking or analytics
+          
+          ## Support
+          For issues or feature requests, please visit:
+          https://github.com/tmm22/WaterTracker/issues
+          
+          ## Acknowledgments
+          - Built with SwiftUI and modern Apple frameworks
+          - Uses Defaults for preferences management
+          - Weather data provided by OpenWeatherMap
         draft: false
         prerelease: false
     
