@@ -4,20 +4,53 @@ A modern macOS application to help you stay hydrated by tracking your daily wate
 
 ## Features
 
-- 💧 Track daily water intake
-- 🌡️ Temperature-based hydration recommendations
-- 📊 View hydration trends and statistics
-- 👤 Customizable user profiles
-- 🔔 Smart hydration reminders
-- 📱 Native macOS notifications
-- 📄 Export hydration data to PDF
-- 🌤️ Weather integration for smart recommendations
+- 💧 Smart Water Tracking
+  - Track daily water intake with quick-add buttons
+  - Visual progress indicator
+  - Customizable intake amounts
+  - Daily goal tracking
 
-## Requirements
+- 🌡️ Weather Integration
+  - Real-time temperature monitoring
+  - Location-based recommendations
+  - Dynamic hydration goals based on weather
+  - Temperature-based smart reminders
 
-- macOS 13.0 or later
-- Xcode 15.0 or later
-- Swift 6.0
+- 👤 Personalized Profiles
+  - Age and weight considerations
+  - Activity level adjustments
+  - Climate zone settings
+  - Health condition accommodations
+
+- 📊 Comprehensive Analytics
+  - Daily, weekly, and monthly trends
+  - Progress visualization
+  - Achievement tracking
+  - Historical data analysis
+
+- 🔔 Smart Reminders
+  - Customizable notification schedule
+  - Weather-based reminders
+  - Activity-adjusted timing
+  - Native macOS notifications
+
+- 📱 Modern Interface
+  - Adaptive UI with dark mode support
+  - Beautiful animations and transitions
+  - Responsive design
+  - Accessibility features
+
+- 📄 Data Management
+  - Export hydration data to PDF
+  - Comprehensive reports
+  - Data backup and sync
+  - Privacy-focused design
+
+## Documentation
+
+- [Project Structure](docs/PROJECT_STRUCTURE.md) - Detailed codebase organization
+- [UI Guide](docs/UI_GUIDE.md) - Screenshots and interface documentation
+- [Build Instructions](docs/BUILD.md) - Compilation and development guide
 
 ## Installation
 
@@ -76,22 +109,40 @@ WaterTracker/
 - Manual input of water intake
 - Customizable measurement units
 - Daily goal tracking
+- Progress visualization
 
 ### Profile Management
 - Personalized user profiles
 - Activity level customization
 - Weight and height tracking
+- Health considerations
 
 ### Smart Recommendations
 - Weather-based hydration advice
 - Activity-adjusted intake goals
 - Personalized reminders
+- Climate adaptations
 
 ### Data Export
 - PDF export functionality
 - Comprehensive hydration reports
 - Profile and trends included
+- Data privacy controls
+
+## Requirements
+
+- macOS 13.0 or later
+- Xcode 15.0 or later
+- Swift 6.0
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details. 
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. 
